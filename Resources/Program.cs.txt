@@ -1,0 +1,4 @@
+using System;
+
+using FNAGame game = new();
+game.Run();

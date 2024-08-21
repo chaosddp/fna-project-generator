@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+	<IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows> 
+	<IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX> 
+	<IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FNA\FNA.NetStandard.csproj" />
+  </ItemGroup>
+
+  <Choose>
+	<When Condition="'$(IsWindows)'=='true'">
+		<ItemGroup>
+			<Content Include="..\fnalibs\x64\**\*.*">
+				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</Content>
+		</ItemGroup>
+	</When>
+
+	<When Condition="'$(IsLinux)'=='true'">
+		<ItemGroup>
+			<Content Include="..\fnalibs\lib64\**\*.*">
+				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</Content>
+		</ItemGroup>
+	</When>
+
+	<When Condition="'$(IsOSX)'=='true'">
+		<ItemGroup>
+			<Content Include="..\fnalibs\osx\**\*.*">
+				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			</Content>
+		</ItemGroup>
+	</When>
+
+	<!-- TODO: check cpu arch -->
+  </Choose>
+
+</Project>
