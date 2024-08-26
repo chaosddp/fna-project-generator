@@ -65,14 +65,15 @@ namespace fnaproj {
         ///using Microsoft.Xna.Framework;
         ///using Microsoft.Xna.Framework.Graphics;
         ///
+        ///namespace &lt;namespace&gt;;
         ///
-        ///class FNAGame : Game
+        ///class Game1 : Game
         ///{
         ///
         ///    private SpriteBatch batch;
         ///
         ///
-        ///    internal FNAGame()
+        ///    internal Game1()
         ///    {
         ///        var gdm = new GraphicsDeviceManager(this);
         ///
@@ -84,20 +85,67 @@ namespace fnaproj {
         ///        Content.RootDirectory = &quot;Content&quot;;
         ///    }
         ///
-        ///    protected override void Initialize [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///    protected over [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
-        internal static string Game_cs {
+        internal static string Game_cs_default {
             get {
-                return ResourceManager.GetString("Game.cs", resourceCulture);
+                return ResourceManager.GetString("Game.cs.default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 
+        ///namespace &lt;namespace&gt;;
+        ///
+        ///public class Game1 : Core
+        ///{
+        ///    protected override void Initialize()
+        ///    {
+        ///        base.Initialize();
+        ///
+        ///        Window.AllowUserResizing = true;
+        ///    }
+        ///} 的本地化字符串。
+        /// </summary>
+        internal static string Game_cs_nez {
+            get {
+                return ResourceManager.GetString("Game.cs.nez", resourceCulture);
             }
         }
         
         /// <summary>
         ///   查找类似 using System;
         ///
-        ///using FNAGame game = new();
-        ///game.Run();
-        /// 的本地化字符串。
+        ///
+        ///#if MONOMAC
+        ///using MonoMac.AppKit;
+        ///using MonoMac.Foundation;
+        ///#elif __IOS__ || __TVOS__
+        ///using Foundation;
+        ///using UIKit;
+        ///#endif
+        ///
+        ///namespace &lt;namespace&gt;;
+        ///
+        ///#if __IOS__ || __TVOS__
+        ///    [Register(&quot;AppDelegate&quot;)]
+        ///    class Program : UIApplicationDelegate
+        ///#else
+        ///	static class Program
+        ///#endif
+        ///	{
+        ///		private static Game1 _game;
+        ///
+        ///		internal static void RunGame()
+        ///		{
+        ///			_game = new Game1();
+        ///			_game.Run();
+        ///#if !__IOS__ &amp;&amp; !__TVOS__
+        ///			_game.Dispose();
+        ///#endif
+        ///		}
+        ///
+        ///		/// &lt;summary&gt;        /// [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string Program_cs {
             get {
@@ -131,10 +179,10 @@ namespace fnaproj {
         ///MinimumVisualStudioVersion = 10.0.40219.1
         ///Project(&quot;{9A19103F-16F7-4668-BE54-9A1E7A4F7556}&quot;) = &quot;&lt;project_name&gt;&quot;, &quot;&lt;project_name&gt;\&lt;project_name&gt;.csproj&quot;, &quot;{F5B3B29B-1FF7-4450-8CF2-804111A97F0D}&quot;
         ///EndProject
-        ///Project(&quot;{9A19103F-16F7-4668-BE54-9A1E7A4F7556}&quot;) = &quot;FNA.NetStandard&quot;, &quot;FNA\FNA.NetStandard.csproj&quot;, &quot;{08E57E7A-8A48-4B4C-B9FF-90F2750EA16D}&quot;
+        ///Project(&quot;{9A19103F-16F7-4668-BE54-9A1E7A4F7556}&quot;) = &quot;FNA.NetStandard&quot;, &quot;FNA\FNA.Core.csproj&quot;, &quot;{08E57E7A-8A48-4B4C-B9FF-90F2750EA16D}&quot;
         ///EndProject
         ///Global
-        ///	GlobalSection [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///	GlobalSection(Soluti [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string project_sln {
             get {

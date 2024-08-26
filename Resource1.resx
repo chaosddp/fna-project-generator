@@ -118,14 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Game.cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\Game.cs.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
   <data name="Program.cs" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\Program.cs.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="project.sln" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\project.sln.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Game.cs.default" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Game.cs.default.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Game.cs.nez" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\Game.cs.nez.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="project.csproj" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\project.csproj.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

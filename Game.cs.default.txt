@@ -2,14 +2,15 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+namespace <namespace>;
 
-class FNAGame : Game
+class Game1 : Game
 {
 
     private SpriteBatch batch;
 
 
-    internal FNAGame()
+    internal Game1()
     {
         var gdm = new GraphicsDeviceManager(this);
 
