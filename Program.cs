@@ -182,11 +182,63 @@ int CreateProject(NewOptions o)
     {
         Console.WriteLine("Copying Nez default content...");
 
+        var target_texture_path = $"{project_name}/Content/nez/textures";
+        var target_effect_path = $"{project_name}/Content/nez/effects";
+
         // copy nez default content
-        CopyDirectory("Nez/DefaultContentSource/textures", $"{project_name}/Content/nez/textures", true);
+        var copied_textures = CopyDirectory("Nez/DefaultContentSource/textures", target_texture_path, true);
 
         // copy nez fna effects
-        CopyDirectory("Nez/DefaultContent/FNAEffects", $"{project_name}/Content/nez/effects", true);
+        var copied_effects = CopyDirectory("Nez/DefaultContent/FNAEffects", target_effect_path, true);
+
+        // update project file
+        {
+            var project_doc = new XmlDocument();
+            var game_project_file = Path.Join(project_name, $"{project_name}.csproj");
+
+            project_doc.Load(game_project_file);
+
+            // add content build action
+            // 1. textures
+            var project_root = project_doc.SelectSingleNode("Project");
+
+            var texture_none_group = project_doc.CreateElement("ItemGroup");
+            var texture_copy_group = project_doc.CreateElement("ItemGroup");
+
+            var copied_content = new List<string>();
+
+            copied_content.AddRange(copied_textures);
+            copied_content.AddRange(copied_effects);
+
+            foreach(var file in copied_content)
+            {
+                var content_file = file.Replace(project_name, "").Replace("/", "\\").Trim('\\');
+
+                // remove from project build
+                var none_ele = project_doc.CreateElement("None");
+
+                none_ele.SetAttribute("Remove", content_file);
+                texture_none_group.AppendChild(none_ele);
+            
+                // copy to content
+                var content_ele = project_doc.CreateElement("Content");
+
+                content_ele.SetAttribute("Include", content_file);
+
+                var output_ele = project_doc.CreateElement("CopyToOutputDirectory");
+                output_ele.InnerText = "PreserveNewest";
+
+                content_ele.AppendChild(output_ele);
+                texture_copy_group.AppendChild(content_ele);
+            }
+
+            project_root!.AppendChild(texture_none_group);
+            project_root!.AppendChild(texture_copy_group);
+
+            // save
+            project_doc.Save(game_project_file);
+        }
+        
     }
 
     // download native libraries
@@ -231,8 +283,10 @@ int CreateProject(NewOptions o)
     return 0;
 }
 
-static void CopyDirectory(string sourceDir, string destDir, bool recursive)
+static List<string> CopyDirectory(string sourceDir, string destDir, bool recursive)
 {
+    var copiedFiles = new List<string>();
+
     var dir = new DirectoryInfo(sourceDir);
 
     if (!dir.Exists)
@@ -249,6 +303,7 @@ static void CopyDirectory(string sourceDir, string destDir, bool recursive)
         var targetFilePath = Path.Combine(destDir, file.Name);
 
         file.CopyTo(targetFilePath);
+        copiedFiles.Add(targetFilePath);
     }
 
     if (recursive)
@@ -257,9 +312,16 @@ static void CopyDirectory(string sourceDir, string destDir, bool recursive)
         {
             var newDestDir = Path.Combine(destDir, subDir.Name);
 
-            CopyDirectory(subDir.FullName, newDestDir, recursive);
+            var newTargetFiles = CopyDirectory(subDir.FullName, newDestDir, recursive);
+
+            foreach(var file in newTargetFiles)
+            {
+                copiedFiles.Add(file);
+            }
         }
     }
+
+    return copiedFiles;
 }
 
 [Verb("new", HelpText = "Create a new game project using FNA.")]
