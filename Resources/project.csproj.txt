@@ -5,10 +5,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
-	<IsWindows Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))' == 'true'">true</IsWindows> 
-	<IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX> 
-	<IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux> 
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,36 +14,24 @@
   <ItemGroup>
     <Folder Include="Content\" />
   </ItemGroup>
-
-  <Choose>
-	<When Condition="'$(IsWindows)'=='true'">
-		<ItemGroup>
-			<Content Include="..\fnalibs\x64\**\*.*">
-				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			</Content>
-		</ItemGroup>
-	</When>
-
-	<When Condition="'$(IsLinux)'=='true'">
-		<ItemGroup>
-			<Content Include="..\fnalibs\lib64\**\*.*">
-				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			</Content>
-		</ItemGroup>
-	</When>
-
-	<When Condition="'$(IsOSX)'=='true'">
-		<ItemGroup>
-			<Content Include="..\fnalibs\osx\**\*.*">
-				<Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
-				<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			</Content>
-		</ItemGroup>
-	</When>
-
-	<!-- TODO: check cpu arch -->
-  </Choose>
+    <ItemGroup>
+		<!-- NOTE: we only support win-x64 here -->
+	    <Content Include="..\fnalibs\x64\**\*.*" Condition="'$(OS)' == 'Windows_NT'">
+		    <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    </Content>
+	    <Content Include="..\fnalibs\osx\**\*.*" Condition="'$(OS)' != 'Windows_NT' AND $(IsOSX) == 'true'">
+		    <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    </Content>
+	    <Content Include="..\fnalibs\lib\**\*.*" Condition="'$(OS)' != 'Windows_NT' AND $(IsLinux) == 'true'">
+		    <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    </Content>
+	    <Content Include="..\fnalibs\lib64\**\*.*" Condition="'$(OS)' != 'Windows_NT' AND $(IsLinux) == 'true'">
+		    <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+		    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    </Content>
+    </ItemGroup>
 
 </Project>

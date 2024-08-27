@@ -94,7 +94,8 @@ namespace fnaproj {
         }
         
         /// <summary>
-        ///   查找类似 
+        ///   查找类似 using Nez;
+        ///
         ///namespace &lt;namespace&gt;;
         ///
         ///public class Game1 : Core
@@ -161,9 +162,18 @@ namespace fnaproj {
         ///    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
         ///    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
         ///    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+        ///  &lt;/PropertyGroup&gt;
         ///
-        ///	&lt;IsWindows Condition=&quot;&apos;$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))&apos; == &apos;true&apos;&quot;&gt;true&lt;/IsWindows&gt; 
-        ///	&lt;IsOSX Condition=&quot;&apos;$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.Inter [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///  &lt;ItemGroup&gt;
+        ///    &lt;ProjectReference Include=&quot;..\FNA\FNA.Core.csproj&quot; /&gt;
+        ///  &lt;/ItemGroup&gt;
+        ///  
+        ///  &lt;ItemGroup&gt;
+        ///    &lt;Folder Include=&quot;Content\&quot; /&gt;
+        ///  &lt;/ItemGroup&gt;
+        ///    &lt;ItemGroup&gt;
+        ///		&lt;!-- NOTE: we only support win-x64 here --&gt;
+        ///	    &lt;Content Include=&quot;..\fnalibs\x64\**\*.*&quot; Co [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string project_csproj {
             get {
