@@ -199,41 +199,49 @@ int CreateProject(NewOptions o)
             project_doc.Load(game_project_file);
 
             // add content build action
-            // 1. textures
             var project_root = project_doc.SelectSingleNode("Project");
 
-            var texture_none_group = project_doc.CreateElement("ItemGroup");
-            var texture_copy_group = project_doc.CreateElement("ItemGroup");
+            var content_group = project_doc.CreateElement("ItemGroup");
 
-            var copied_content = new List<string>();
+            // add textures
+            var textures_content = project_doc.CreateElement("Content");
+            var textures_link = project_doc.CreateElement("Link");
+            var textures_copy = project_doc.CreateElement("CopyToOutputDirectory");
 
-            copied_content.AddRange(copied_textures);
-            copied_content.AddRange(copied_effects);
+            textures_link.InnerText = "Content/nez/textures/%(RecursiveDir)%(Filename)%(Extension)";
+            textures_copy.InnerText = "PreserveNewest";
 
-            foreach(var file in copied_content)
-            {
-                var content_file = file.Replace(project_name, "").Replace("/", "\\").Trim('\\');
-
-                // remove from project build
-                var none_ele = project_doc.CreateElement("None");
-
-                none_ele.SetAttribute("Remove", content_file);
-                texture_none_group.AppendChild(none_ele);
+            textures_content.SetAttribute("Include", "../Nez/DefaultContentSource/textures/**/*.xnb");
             
-                // copy to content
-                var content_ele = project_doc.CreateElement("Content");
+            textures_content.AppendChild(textures_link);
+            textures_content.AppendChild(textures_copy);
+            content_group.AppendChild(textures_content);
 
-                content_ele.SetAttribute("Include", content_file);
+            // add effects
+            var effects_content = project_doc.CreateElement("Content");
+            var effects_link = project_doc.CreateElement("Link");
+            var effects_copy = project_doc.CreateElement("CopyToOutputDirectory");
 
-                var output_ele = project_doc.CreateElement("CopyToOutputDirectory");
-                output_ele.InnerText = "PreserveNewest";
+            effects_link.InnerText = "Content/nez/effects/%(RecursiveDir)%(Filename)%(Extension)";
+            effects_copy.InnerText = "PreserveNewest";
 
-                content_ele.AppendChild(output_ele);
-                texture_copy_group.AppendChild(content_ele);
-            }
+            effects_content.SetAttribute("Include", "../Nez/DefaultContent/FNAEffects/**/*.fxb");
 
-            project_root!.AppendChild(texture_none_group);
-            project_root!.AppendChild(texture_copy_group);
+            effects_content.AppendChild(effects_link);
+            effects_content.AppendChild(effects_copy);
+            content_group.AppendChild(effects_content);
+
+            // add project content
+            var project_content = project_doc.CreateElement("Content");
+            var project_copy = project_doc.CreateElement("CopyToOutputDirectory");
+
+            project_copy.InnerText = "PreserveNewest";
+
+            project_content.SetAttribute("Include", @"Content\**\*");
+            project_content.SetAttribute("Exclude", @"**\*.fx");
+
+
+            project_root!.AppendChild(content_group);
 
             // save
             project_doc.Save(game_project_file);
