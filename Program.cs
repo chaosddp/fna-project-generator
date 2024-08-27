@@ -178,6 +178,16 @@ int CreateProject(NewOptions o)
         Console.WriteLine("Project already exists, skip.");
     }
 
+    if (o.Nez)
+    {
+        Console.WriteLine("Copying Nez default content...");
+
+        // copy nez default content
+        CopyDirectory("Nez/DefaultContentSource/textures", $"{project_name}/Content/nez/textures", true);
+
+        // copy nez fna effects
+        CopyDirectory("Nez/DefaultContent/FNAEffects", $"{project_name}/Content/nez/effects", true);
+    }
 
     // download native libraries
     var native_lib_name = "fnalibs.tar.bz2";
@@ -219,6 +229,37 @@ int CreateProject(NewOptions o)
     TarFile.ExtractToDirectory(native_lib_tar_name, native_lib_path, true);
 
     return 0;
+}
+
+static void CopyDirectory(string sourceDir, string destDir, bool recursive)
+{
+    var dir = new DirectoryInfo(sourceDir);
+
+    if (!dir.Exists)
+    {
+        throw new DirectoryNotFoundException($"Source directory not found: {dir.FullName}");
+    }
+
+    var dirs = dir.GetDirectories();
+
+    Directory.CreateDirectory(destDir);
+
+    foreach (var file in dir.GetFiles())
+    {
+        var targetFilePath = Path.Combine(destDir, file.Name);
+
+        file.CopyTo(targetFilePath);
+    }
+
+    if (recursive)
+    {
+        foreach (var subDir in dirs)
+        {
+            var newDestDir = Path.Combine(destDir, subDir.Name);
+
+            CopyDirectory(subDir.FullName, newDestDir, recursive);
+        }
+    }
 }
 
 [Verb("new", HelpText = "Create a new game project using FNA.")]
